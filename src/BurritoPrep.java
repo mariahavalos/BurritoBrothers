@@ -1,11 +1,23 @@
 
 public class BurritoPrep {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public void makeBurritos() { 
+	       try
+	       {
+	           BurritoBrothersStore.getStore().ingredients.acquire();
+	           BurritoBrothersStore.getStore().ingredients.release();
+	           try {
+	        	   Thread.sleep(10);
+	           } 
+	           catch (InterruptedException e) 
+	           {
+	        	   e.printStackTrace();
+	           }
+	              
+	       }
+	       catch (InterruptedException e){
+	    	   e.printStackTrace();
+	       }
 
 	}
 

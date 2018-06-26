@@ -81,9 +81,14 @@ public class BurritoBrothersStore {
 	}
 	
 	public static void cookBurritos(int numberOfBurritos, int serverNumber){
+		
+		BurritoPrep preppingBurritos = new BurritoPrep();
+		preppingBurritos.makeBurritos();
+		
 	}
 	
 	public static void pay(Customer customerAtRegister){
+		  
 	}
 	
 	public static void approachRegister(){

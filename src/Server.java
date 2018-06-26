@@ -2,9 +2,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Server {
 
-	 private int serverNumber;
-	 private Customer customerAtCounter;
-	 static private int servers = 3;
+	 private static int serverNumber;
+	 private static Customer customerAtCounter;
+	 private static int servers = 3;
 	   
 	   public Server(int serverNumber)
 	   {
@@ -12,7 +12,7 @@ public class Server {
 	   }  
 	  
 	
-	   public void FreeServer()
+	   public static void freeServer()
 	   {
 	       try
 	       {
@@ -25,7 +25,8 @@ public class Server {
 	           if (customerAtCounter.getOrderSize() > 3)
 	           {
 	               customerAtCounter.partialFill();         
-	               BurritoBrothersStore.getStore().cookBurritos(3, serverNumber);  
+	               BurritoBrothersStore.getStore();
+	               BurritoBrothersStore.cookBurritos(3, serverNumber);  
 	               
 	               BurritoBrothersStore.getStore().lineActions(customerAtCounter,false);  
 	               BurritoBrothersStore.getStore().serving.release();
@@ -33,15 +34,19 @@ public class Server {
 	           
 	           else
 	           {
-	               BurritoBrothersStore.getStore().cookBurritos(customerAtCounter.getOrderSize(), serverNumber);
-	               BurritoBrothersStore.getStore().pay(customerAtCounter);      
+	               BurritoBrothersStore.getStore();
+	               BurritoBrothersStore.cookBurritos(customerAtCounter.getOrderSize(), serverNumber);
+	               BurritoBrothersStore.pay(customerAtCounter);      
 	               if (!BurritoBrothersStore.getStore().Register.isEmpty() && BurritoBrothersStore.getStore().register.tryAcquire())
 	               {
-	                   BurritoBrothersStore.getStore().approachRegister();
+	                   BurritoBrothersStore.getStore();
+	                   BurritoBrothersStore.approachRegister();
 	               }              
 	           }
 	       }
-	       catch (InterruptedException e1) {e1.printStackTrace();}
+	       catch (InterruptedException e) {
+	    	   e.printStackTrace();
+	    }
 	  
 	   }
 	  
@@ -56,7 +61,7 @@ public class Server {
 	               // try to serve customer if no customer in line wait
 	               if (BurritoBrothersStore.getStore().serving.tryAcquire(25, TimeUnit.MILLISECONDS))
 	               {
-	                   FreeServer();
+	                   freeServer();
 	               }
 	               else
 	               {
