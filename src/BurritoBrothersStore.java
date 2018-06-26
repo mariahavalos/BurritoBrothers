@@ -1,12 +1,15 @@
 import java.util.concurrent.Semaphore;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 
 public class BurritoBrothersStore {
    private int currentCustomerCount = 0;
-   protected int currentCustomerinLine = 0;
+   protected int currentCustomerInLine = 0;
    protected int customerNumber = 0;
-   protected Customer line[] = new Customer[1];
-   protected LinkedList<Customer> Register = new LinkedList<Customer>();  
+   protected ArrayList<Customer> line = new ArrayList<Customer>();
+   protected ArrayList<Customer> Register = new ArrayList<Customer>();  
    
    protected Semaphore customerEntered = new Semaphore(1);
    protected Semaphore serving = new Semaphore(0);
@@ -33,7 +36,7 @@ public class BurritoBrothersStore {
 				currentCustomerCount += 1;
 				currentCustomer.setCustomerNumber(customerNumber);	
 				
-				//function here
+				lineActions(currentCustomer, false); 
 				
 				serving.acquire();
 				customerEntered.release();
@@ -42,7 +45,6 @@ public class BurritoBrothersStore {
 			else{
 				System.out.println("Store is full. Customer must come back later.");
 				customerEntered.release(); 
-				
 			}
 		} 
 		
@@ -51,5 +53,23 @@ public class BurritoBrothersStore {
 			e.printStackTrace();
 		} 
 	}
+	
+	public void lineActions(Customer currentCustomer, boolean orderTaken){
+		try {
+			lineCount.acquire();
+			
+			//add customer to line
+			if (!orderTaken){
+				line.add(currentCustomer);
+			}
+			
+			//sort line for smallest order size
+			Collections.sort(line);
+		} 
+		catch (InterruptedException e) {
 
+			e.printStackTrace();
+		} 
+		
+	}
 }

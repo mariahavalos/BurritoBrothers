@@ -1,5 +1,5 @@
 
-public class Customer {
+public class Customer implements Comparable<Customer> {
 
 	   private int customerNumber;
 	   private int orderSize;
@@ -9,7 +9,7 @@ public class Customer {
 	       this.orderSize = (int)(1+20*Math.random());      
 	   }
 	   
-	   protected int getOrderSize()
+	   protected Integer getOrderSize()
 	   {
 	       return this.orderSize;
 	   }
@@ -29,5 +29,9 @@ public class Customer {
 	   {
 	       this.customerNumber = customerNumber;
 	   }
-
+	   
+	   @Override
+		public int compareTo(Customer customer) {
+	        return getOrderSize().compareTo(customer.getOrderSize());
+	    }
 }
