@@ -1,8 +1,6 @@
 import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 
 public class BurritoBrothersStore {
    private int currentCustomerCount = 0;
@@ -18,12 +16,11 @@ public class BurritoBrothersStore {
    protected Semaphore counter = new Semaphore(1);
    protected Semaphore lineCount = new Semaphore(1);
    protected Semaphore ingredients = new Semaphore(1);
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+   
+   private static BurritoBrothersStore burritoBrothers = new BurritoBrothersStore();
+   
+	public static BurritoBrothersStore getStore() {
+		return burritoBrothers;
 	}
 	
 	public void enterCustomer(){
@@ -63,6 +60,9 @@ public class BurritoBrothersStore {
 				line.add(currentCustomer);
 			}
 			
+			else{
+			}
+			
 			//sort line for smallest order size
 			Collections.sort(line);
 		} 
@@ -70,6 +70,23 @@ public class BurritoBrothersStore {
 
 			e.printStackTrace();
 		} 
+		
+	}
+	
+	public Customer currentCustomerAtCounter(int serverNumber){
+		
+		Customer atCounter = new Customer();
+		
+		return atCounter;
+	}
+	
+	public static void cookBurritos(int numberOfBurritos, int serverNumber){
+	}
+	
+	public static void pay(Customer customerAtRegister){
+	}
+	
+	public static void approachRegister(){
 		
 	}
 }
