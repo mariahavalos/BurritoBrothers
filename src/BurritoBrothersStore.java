@@ -91,7 +91,22 @@ public class BurritoBrothersStore {
 		  
 	}
 	
-	public static void approachRegister(){
-		
-	}
+	 public void checkout()
+	   { 
+	       while (!Register.isEmpty())
+	       {          
+	    	   Customer payingCustomer; 
+	           payingCustomer = Register.remove(0);
+	           try {
+	        	   Thread.sleep(25);
+	           }
+	           catch (InterruptedException e) {
+	        	   e.printStackTrace();
+	           }
+	                          
+	          
+	           currentCustomerCount -= 1;
+	       }  
+	       register.release();
+	   }  
 }

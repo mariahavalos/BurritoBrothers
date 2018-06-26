@@ -39,8 +39,7 @@ public class Server {
 	               BurritoBrothersStore.pay(customerAtCounter);      
 	               if (!BurritoBrothersStore.getStore().Register.isEmpty() && BurritoBrothersStore.getStore().register.tryAcquire())
 	               {
-	                   BurritoBrothersStore.getStore();
-	                   BurritoBrothersStore.approachRegister();
+	                   BurritoBrothersStore.getStore().checkout();
 	               }              
 	           }
 	       }
