@@ -1,7 +1,7 @@
 
 public class Customer {
 
-	   private int customerId;
+	   private int customerNumber;
 	   private int orderSize;
 	      
 	   public Customer()
@@ -19,15 +19,15 @@ public class Customer {
 	       this.orderSize -= 3;
 	   }
 	  
-	   public int getCustomerId()
+	   public int getCustomerNumber()
 	   {
-	       return this.customerId;
+	       return this.customerNumber;
 	   }
 	  
 
-	   public void setCustomerId(int customerId)
+	   public void setCustomerNumber(int customerNumber)
 	   {
-	       this.customerId = customerId;
+	       this.customerNumber = customerNumber;
 	   }
 
 }
