@@ -16,18 +16,15 @@ public class Server implements Runnable{
 	   {
 	       try
 	       {
-	    	   
-	           //BurritoBrothersStore.getStore().serving.acquire();
-	    	   
 	           BurritoBrothersStore.getStore().counter.acquire();
 	           customerAtCounter = BurritoBrothersStore.getStore().currentCustomerAtCounter(serverNumber);
 	           BurritoBrothersStore.getStore().counter.release();
-	           System.out.println("Customer Number " + customerAtCounter.getCustomerNumber() + " has ordered " + customerAtCounter.getOrderSize() + " burritos.");
 	          
 	           if (customerAtCounter.getOrderSize() > 3)
 	           {
-	               customerAtCounter.partialFill();         
-	               BurritoBrothersStore.getStore().cookBurritos(3, serverNumber); 
+	               customerAtCounter.partialFill();  
+	               BurritoBrothersStore.getStore().currentCustomerInLine += 1;
+	               BurritoBrothersStore.getStore().cookBurritos(3, customerAtCounter.getCustomerNumber()); 
 	               System.out.println("Customer Number " + customerAtCounter.getCustomerNumber() + " has " + customerAtCounter.getOrderSize() + " burritos left in their order.");
 	               
 	               BurritoBrothersStore.getStore().lineActions(customerAtCounter, true);  
@@ -36,7 +33,7 @@ public class Server implements Runnable{
 	           
 	           else
 	           {
-	               BurritoBrothersStore.getStore().cookBurritos(customerAtCounter.getOrderSize(), serverNumber);
+	               BurritoBrothersStore.getStore().cookBurritos(customerAtCounter.getOrderSize(), customerAtCounter.getCustomerNumber());
 	               BurritoBrothersStore.pay(customerAtCounter);      
 	               if (!BurritoBrothersStore.getStore().Register.isEmpty() && BurritoBrothersStore.getStore().register.tryAcquire())
 	               {

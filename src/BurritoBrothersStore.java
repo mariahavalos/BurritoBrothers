@@ -2,7 +2,7 @@ import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class BurritoBrothersStore {
+public class BurritoBrothersStore implements Runnable{
    private int currentCustomerCount = 0;
    protected int currentCustomerInLine = 0;
    protected int customerNumber = 0;
@@ -34,6 +34,7 @@ public class BurritoBrothersStore {
 				currentCustomer.setCustomerNumber(customerNumber);	
 				
 				lineActions(currentCustomer, false); 
+				System.out.println("Customer Number " + currentCustomer.getCustomerNumber() + " has ordered " + currentCustomer.getOrderSize() + " burritos.");
 				serving.release();	
 				customerEntered.release();
 				
@@ -54,14 +55,16 @@ public class BurritoBrothersStore {
 	public void lineActions(Customer currentCustomer, boolean orderTaken){
 		try {
 			lineCount.acquire();
-			
 			//add customer to line
 			if (!orderTaken){
-				System.out.println("Order taken for customer: " + customerNumber);
+				currentCustomerInLine += 1;
+				System.out.println("Customer Number " + customerNumber + " has entered the line.");
 				line.add(currentCustomer);
 			}
 			
 			else{
+				line.add(currentCustomer);
+				currentCustomerInLine += 1;
 			}	
 			
 			//sort line for smallest order size
@@ -76,22 +79,24 @@ public class BurritoBrothersStore {
 	}
 	
 	public Customer currentCustomerAtCounter(int serverNumber){
-		System.out.println("Customer Number " + customerNumber + " at the counter.");
 		Customer customerAtCounter = new Customer();
 		
 		customerAtCounter = line.get(0);
+		System.out.println("Customer Number " + customerAtCounter.getCustomerNumber() + " at the counter.");
 		
-		for (int i = 0; i < currentCustomerInLine; i++){
+		for (int i = 0; i < line.size()-1; i++){
 			line.set(i, line.get(i + 1));
 		}
 		
-		//line.set(currentCustomerInLine, null);
 		currentCustomerInLine -= 1;
+		line.remove(0);
+		
+		//line.set(currentCustomerInLine, null);
 		return customerAtCounter;
 	}
 	
-	public void cookBurritos(int numberOfBurritos, int serverNumber){
-		System.out.println("Customer Number " + customerNumber + "'s burritos are being made.");
+	public void cookBurritos(int numberOfBurritos, int customerNum){
+		System.out.println("Customer Number " + customerNum + "'s burritos are being made.");
 		BurritoPrep.makeBurritos();
 	}
 	
@@ -106,22 +111,20 @@ public class BurritoBrothersStore {
 	       {          
 	    	   Customer payingCustomer; 
 	           payingCustomer = Register.remove(0);
-	           System.out.println("Customer Number " + customerNumber + " is paying.");
+	           System.out.println("Customer Number " + payingCustomer.getCustomerNumber() + " is paying.");
 	           try {
 	        	   Thread.sleep(25);
 	           }
 	           catch (InterruptedException e) {
 	        	   e.printStackTrace();
 	           }
-	                          
-	          
-	           currentCustomerCount -= 1;
-	           System.out.println("Customer Number " + customerNumber + " has left.");
+	           
+	           System.out.println("Customer Number " + payingCustomer.getCustomerNumber() + " has left.");
 	       }  
 	       register.release();
 	   }
 	 
-	 //public void run(){
-		//enterCustomer();
-	// }
+	 public void run(){
+		enterCustomer();
+	 }
 }

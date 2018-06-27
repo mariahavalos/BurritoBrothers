@@ -1,16 +1,25 @@
 
 public class Simulation {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Server server = new Server(1);
-		BurritoBrothersStore.getStore().enterCustomer();
-		server.run();
-		BurritoBrothersStore.getStore().enterCustomer();
-
-
+	public static void main(String[] args) {	
+		 for (int i=0; i < 3; i++){
+			 Thread Server = new Thread(new Server(i));           
+			 Server.start();                  
+	      }
+	  
+	      for (int i=0; i < 3; ++i)
+	      {
+	      	Thread Customers = new Thread(BurritoBrothersStore.getStore());
+	       	Customers.start();  
+	          
+	          
+	      try {
+	    	  Thread.sleep((50));
+	      }
+	      catch (InterruptedException e) {
+	    	  e.printStackTrace();
+	      }
+	  }  
 	}
 
 }
