@@ -4,7 +4,6 @@ public class Line {
 	    try {
 	    	   BurritoBrothersStore.getStore().register.acquire();
 	           BurritoBrothersStore.getStore().Register.add(customerAtCounter);    
-	          
 	           BurritoBrothersStore.getStore().register.release();
 	      }
 	    catch (InterruptedException e) {

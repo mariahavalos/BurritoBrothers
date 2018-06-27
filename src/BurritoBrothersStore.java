@@ -55,7 +55,6 @@ public class BurritoBrothersStore implements Runnable{
 	public void lineActions(Customer currentCustomer, boolean orderTaken){
 		try {
 			lineCount.acquire();
-			//add customer to line
 			if (!orderTaken){
 				currentCustomerInLine += 1;
 				System.out.println("\nCustomer Number " + customerNumber + " has entered the line. \n");
@@ -97,8 +96,8 @@ public class BurritoBrothersStore implements Runnable{
 		return customerAtCounter;
 	}
 	
-	public void cookBurritos(int numberOfBurritos, int customerNum){
-		System.out.println("Customer Number " + customerNum + "'s burritos are being made.");
+	public void cookBurritos(int numberOfBurritos, int customerNum, int serverNum){
+		System.out.println("Customer Number " + customerNum + "'s burritos are being made by Server Number " + serverNum);
 		BurritoPrep.makeBurritos();
 	}
 	

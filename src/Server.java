@@ -23,7 +23,7 @@ public class Server implements Runnable{
 	           {
 	               customerAtCounter.partialFill();  
 	               BurritoBrothersStore.getStore().currentCustomerInLine += 1;
-	               BurritoBrothersStore.getStore().cookBurritos(3, customerAtCounter.getCustomerNumber()); 
+	               BurritoBrothersStore.getStore().cookBurritos(3, customerAtCounter.getCustomerNumber(), serverNumber); 
 	               System.out.println("Customer Number " + customerAtCounter.getCustomerNumber() + " has " + customerAtCounter.getOrderSize() + " burritos left in their order.");
 	               
 	               BurritoBrothersStore.getStore().lineActions(customerAtCounter, true);  
@@ -32,7 +32,7 @@ public class Server implements Runnable{
 	           
 	           else
 	           {
-	               BurritoBrothersStore.getStore().cookBurritos(customerAtCounter.getOrderSize(), customerAtCounter.getCustomerNumber());
+	               BurritoBrothersStore.getStore().cookBurritos(customerAtCounter.getOrderSize(), customerAtCounter.getCustomerNumber(), serverNumber);
 	               BurritoBrothersStore.pay(customerAtCounter);      
 	               if (!BurritoBrothersStore.getStore().Register.isEmpty() && BurritoBrothersStore.getStore().register.tryAcquire())
 	               {
