@@ -27,6 +27,7 @@ public class BurritoBrothersStore {
 		try {
 			customerEntered.acquire();
 			customerNumber += 1; 
+			System.out.println(customerNumber);
 			
 			if (currentCustomerCount < 15){
 				Customer currentCustomer = new Customer();
@@ -34,9 +35,9 @@ public class BurritoBrothersStore {
 				currentCustomer.setCustomerNumber(customerNumber);	
 				
 				lineActions(currentCustomer, false); 
-				
-				serving.acquire();
+				serving.acquire();			
 				customerEntered.release();
+				
 			}
 			
 			else{
@@ -58,6 +59,7 @@ public class BurritoBrothersStore {
 			//add customer to line
 			if (!orderTaken){
 				line.add(currentCustomer);
+				System.out.println("ok");
 			}
 			
 			else{
@@ -81,14 +83,13 @@ public class BurritoBrothersStore {
 	}
 	
 	public static void cookBurritos(int numberOfBurritos, int serverNumber){
-		
-		BurritoPrep preppingBurritos = new BurritoPrep();
-		preppingBurritos.makeBurritos();
+
+		BurritoPrep.makeBurritos();
 		
 	}
 	
 	public static void pay(Customer customerAtRegister){
-		  
+		  Line.payAtRegister(customerAtRegister);
 	}
 	
 	 public void checkout()

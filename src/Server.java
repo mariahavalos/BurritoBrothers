@@ -1,6 +1,6 @@
 import java.util.concurrent.TimeUnit;
 
-public class Server {
+public class Server implements Runnable{
 
 	 private static int serverNumber;
 	 private static Customer customerAtCounter;
@@ -14,10 +14,11 @@ public class Server {
 	
 	   public static void freeServer()
 	   {
+		   System.out.println("ok2");
 	       try
 	       {
+	    	   
 	           BurritoBrothersStore.getStore().serving.acquire();
-	      
 	           BurritoBrothersStore.getStore().counter.acquire();
 	           customerAtCounter = BurritoBrothersStore.getStore().currentCustomerAtCounter(serverNumber);
 	           BurritoBrothersStore.getStore().counter.release();
@@ -51,7 +52,6 @@ public class Server {
 	  
 	   public void run()
 	   {
-	      
 	       boolean working=true;  
 	       while (working)
 	       {
@@ -60,14 +60,18 @@ public class Server {
 	               // try to serve customer if no customer in line wait
 	               if (BurritoBrothersStore.getStore().serving.tryAcquire(25, TimeUnit.MILLISECONDS))
 	               {
+	            	   System.out.println("ok2");
 	                   freeServer();
 	               }
 	               else
 	               {
+	            	   System.out.println("ok2");
 	                   //close store
 	               }
 	           }
-	           catch (InterruptedException e) {e.printStackTrace();   }
+	           catch (InterruptedException e) {
+	        	   e.printStackTrace();   
+	           }
 	                      
 	       }      
 	      

@@ -1,7 +1,7 @@
 
 public class BurritoPrep {
 
-	public void makeBurritos() { 
+	public static void makeBurritos() { 
 	       try
 	       {
 	           BurritoBrothersStore.getStore().ingredients.acquire();
