@@ -64,8 +64,6 @@ public class BurritoBrothersStore implements Runnable{
 			else{
 				line.add(currentCustomer);
 				currentCustomerInLine += 1;
-				System.out.println("Customer Number " + customerNumber + " has reentered the line. \n");
-
 			}	
 			
 			//sort line for smallest order size
@@ -121,6 +119,7 @@ public class BurritoBrothersStore implements Runnable{
 	           }
 	           
 	           System.out.println("Customer Number " + payingCustomer.getCustomerNumber() + " has left.");
+	           currentCustomerCount -= 1;
 	       }  
 	       register.release();
 	   }
