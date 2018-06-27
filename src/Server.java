@@ -56,7 +56,7 @@ public class Server implements Runnable{
 	           try
 	           {
 	               // try to serve customer if no customer in line wait
-	               if (BurritoBrothersStore.getStore().serving.tryAcquire(500, TimeUnit.MILLISECONDS))
+	               if (BurritoBrothersStore.getStore().serving.tryAcquire(300, TimeUnit.MILLISECONDS))
 	               {
 	                   freeServer();
 	               }
