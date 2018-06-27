@@ -2,9 +2,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Server implements Runnable{
 
-	 private static int serverNumber;
-	 private static Customer customerAtCounter;
-	 private static int servers = 3;
+	 private int serverNumber;
+	 private Customer customerAtCounter;
 	   
 	   public Server(int serverNumber)
 	   {
@@ -12,7 +11,7 @@ public class Server implements Runnable{
 	   }  
 	  
 	
-	   public static void freeServer()
+	   public void freeServer()
 	   {
 	       try
 	       {
@@ -37,7 +36,9 @@ public class Server implements Runnable{
 	               BurritoBrothersStore.pay(customerAtCounter);      
 	               if (!BurritoBrothersStore.getStore().Register.isEmpty() && BurritoBrothersStore.getStore().register.tryAcquire())
 	               {
+	            	   System.out.println("\nServer Number " + serverNumber + " checking out Customer Number " + customerAtCounter.getCustomerNumber());
 	                   BurritoBrothersStore.getStore().checkout();
+	                   System.out.println("\nServer Number " + serverNumber + " is ready for more work!");
 	               }      
 	           }
 	       }
@@ -55,14 +56,13 @@ public class Server implements Runnable{
 	           try
 	           {
 	               // try to serve customer if no customer in line wait
-	               if (BurritoBrothersStore.getStore().serving.tryAcquire(25, TimeUnit.MILLISECONDS))
+	               if (BurritoBrothersStore.getStore().serving.tryAcquire(500, TimeUnit.MILLISECONDS))
 	               {
 	                   freeServer();
 	               }
 	               else
 	               {
 	            	   working = false;
-	                   //close store
 	               }
 	           }
 	           catch (InterruptedException e) {

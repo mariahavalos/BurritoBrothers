@@ -58,13 +58,15 @@ public class BurritoBrothersStore implements Runnable{
 			//add customer to line
 			if (!orderTaken){
 				currentCustomerInLine += 1;
-				System.out.println("Customer Number " + customerNumber + " has entered the line.");
+				System.out.println("\nCustomer Number " + customerNumber + " has entered the line. \n");
 				line.add(currentCustomer);
 			}
 			
 			else{
 				line.add(currentCustomer);
 				currentCustomerInLine += 1;
+				System.out.println("Customer Number " + customerNumber + " has reentered the line. \n");
+
 			}	
 			
 			//sort line for smallest order size
@@ -82,7 +84,8 @@ public class BurritoBrothersStore implements Runnable{
 		Customer customerAtCounter = new Customer();
 		
 		customerAtCounter = line.get(0);
-		System.out.println("Customer Number " + customerAtCounter.getCustomerNumber() + " at the counter.");
+		System.out.println("\nCustomer Number " + customerAtCounter.getCustomerNumber() + " at the counter.");
+		System.out.println("Server Number " + serverNumber + " assisting. \n");
 		
 		for (int i = 0; i < line.size()-1; i++){
 			line.set(i, line.get(i + 1));
@@ -91,7 +94,6 @@ public class BurritoBrothersStore implements Runnable{
 		currentCustomerInLine -= 1;
 		line.remove(0);
 		
-		//line.set(currentCustomerInLine, null);
 		return customerAtCounter;
 	}
 	
