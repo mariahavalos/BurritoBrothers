@@ -13,7 +13,7 @@ public class BurritoPrep {
 	           try {
 	        	   
 	        	   //allows for the queue to build up realistically while the "burritos" are being made. this helps to complicate the queue/order/asynchronous nature
-	        	   Thread.sleep(30);
+	        	   Thread.sleep(20);
 	           } 
 	           catch (InterruptedException e) 
 	           {

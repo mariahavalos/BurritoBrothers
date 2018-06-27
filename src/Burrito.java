@@ -1,4 +1,4 @@
-public class Simulation {
+public class Burrito {
 
 	/*
 	 * Main class that initalizes the amount of customers at random and servers to a static number 3. 
