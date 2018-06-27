@@ -27,7 +27,6 @@ public class BurritoBrothersStore {
 		try {
 			customerEntered.acquire();
 			customerNumber += 1; 
-			System.out.println(customerNumber);
 			
 			if (currentCustomerCount < 15){
 				Customer currentCustomer = new Customer();
@@ -35,7 +34,7 @@ public class BurritoBrothersStore {
 				currentCustomer.setCustomerNumber(customerNumber);	
 				
 				lineActions(currentCustomer, false); 
-				serving.acquire();			
+				serving.release();	
 				customerEntered.release();
 				
 			}
@@ -58,15 +57,16 @@ public class BurritoBrothersStore {
 			
 			//add customer to line
 			if (!orderTaken){
+				System.out.println("Order taken for customer: " + customerNumber);
 				line.add(currentCustomer);
-				System.out.println("ok");
 			}
 			
 			else{
-			}
+			}	
 			
 			//sort line for smallest order size
 			Collections.sort(line);
+			lineCount.release();
 		} 
 		catch (InterruptedException e) {
 
@@ -76,16 +76,15 @@ public class BurritoBrothersStore {
 	}
 	
 	public Customer currentCustomerAtCounter(int serverNumber){
+		System.out.println("Customer Number " + customerNumber + " at the counter.");
+		Customer customerAtCounter = new Customer();
 		
-		Customer atCounter = new Customer();
-		
-		return atCounter;
+		return customerAtCounter;
 	}
 	
-	public static void cookBurritos(int numberOfBurritos, int serverNumber){
-
+	public void cookBurritos(int numberOfBurritos, int serverNumber){
+		System.out.println("Customer Number " + customerNumber + "'s burritos are being made.");
 		BurritoPrep.makeBurritos();
-		
 	}
 	
 	public static void pay(Customer customerAtRegister){
@@ -94,10 +93,12 @@ public class BurritoBrothersStore {
 	
 	 public void checkout()
 	   { 
+		 
 	       while (!Register.isEmpty())
 	       {          
 	    	   Customer payingCustomer; 
 	           payingCustomer = Register.remove(0);
+	           System.out.println("Customer Number " + customerNumber + "is paying.");
 	           try {
 	        	   Thread.sleep(25);
 	           }
@@ -107,6 +108,7 @@ public class BurritoBrothersStore {
 	                          
 	          
 	           currentCustomerCount -= 1;
+	           System.out.println("Customer Number " + customerNumber + "has left.");
 	       }  
 	       register.release();
 	   }  

@@ -14,7 +14,6 @@ public class Server implements Runnable{
 	
 	   public static void freeServer()
 	   {
-		   System.out.println("ok2");
 	       try
 	       {
 	    	   
@@ -25,18 +24,18 @@ public class Server implements Runnable{
 	          
 	           if (customerAtCounter.getOrderSize() > 3)
 	           {
+	        	   System.out.println("Customer number has ordered " + customerAtCounter.getOrderSize() + " burritos.");
 	               customerAtCounter.partialFill();         
-	               BurritoBrothersStore.getStore();
-	               BurritoBrothersStore.cookBurritos(3, serverNumber);  
+	               BurritoBrothersStore.getStore().cookBurritos(3, serverNumber); 
+	               System.out.println("Customer number has " + customerAtCounter.getOrderSize() + " burritos left in their order.");
 	               
-	               BurritoBrothersStore.getStore().lineActions(customerAtCounter,false);  
+	               BurritoBrothersStore.getStore().lineActions(customerAtCounter, true);  
 	               BurritoBrothersStore.getStore().serving.release();
 	           }  
 	           
 	           else
 	           {
-	               BurritoBrothersStore.getStore();
-	               BurritoBrothersStore.cookBurritos(customerAtCounter.getOrderSize(), serverNumber);
+	               BurritoBrothersStore.getStore().cookBurritos(customerAtCounter.getOrderSize(), serverNumber);
 	               BurritoBrothersStore.pay(customerAtCounter);      
 	               if (!BurritoBrothersStore.getStore().Register.isEmpty() && BurritoBrothersStore.getStore().register.tryAcquire())
 	               {
@@ -60,12 +59,10 @@ public class Server implements Runnable{
 	               // try to serve customer if no customer in line wait
 	               if (BurritoBrothersStore.getStore().serving.tryAcquire(25, TimeUnit.MILLISECONDS))
 	               {
-	            	   System.out.println("ok2");
 	                   freeServer();
 	               }
 	               else
 	               {
-	            	   System.out.println("ok2");
 	                   //close store
 	               }
 	           }
