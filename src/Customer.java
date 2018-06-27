@@ -9,7 +9,7 @@ public class Customer implements Comparable<Customer> {
 	      
 	   public Customer()
 	   {
-	       this.orderSize = (int)(1+20*Math.random());      
+	       this.orderSize = (int)(25 * Math.random());      
 	   }
 	   
 	   protected Integer getOrderSize()

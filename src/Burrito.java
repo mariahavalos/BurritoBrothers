@@ -6,15 +6,19 @@ public class Burrito {
 	 * 
 	 */
 	public static void main(String[] args) {
-		int numberOfCustomers = (int)(1+20*Math.random()); 
+		//randomly generated customers
+		int numberOfCustomers = (int)(25 * Math.random()); 
 		
 		 for (int i=1; i < 4; i++){
+			 //thread for the servers
 			 Thread Server = new Thread(new Server(i));           
 			 Server.start();   
 	      }
 	  
 	      for (int i=0; i < numberOfCustomers; ++i)
 	      {
+	    	
+	    	//thread for the customers (generated at random)
 	      	Thread Customers = new Thread(BurritoBrothersStore.getStore());
 	       	Customers.start();  
 	          
