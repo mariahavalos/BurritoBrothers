@@ -17,17 +17,18 @@ public class Server implements Runnable{
 	       try
 	       {
 	    	   
-	           BurritoBrothersStore.getStore().serving.acquire();
+	           //BurritoBrothersStore.getStore().serving.acquire();
+	    	   
 	           BurritoBrothersStore.getStore().counter.acquire();
 	           customerAtCounter = BurritoBrothersStore.getStore().currentCustomerAtCounter(serverNumber);
 	           BurritoBrothersStore.getStore().counter.release();
+	           System.out.println("Customer Number " + customerAtCounter.getCustomerNumber() + " has ordered " + customerAtCounter.getOrderSize() + " burritos.");
 	          
 	           if (customerAtCounter.getOrderSize() > 3)
 	           {
-	        	   System.out.println("Customer number has ordered " + customerAtCounter.getOrderSize() + " burritos.");
 	               customerAtCounter.partialFill();         
 	               BurritoBrothersStore.getStore().cookBurritos(3, serverNumber); 
-	               System.out.println("Customer number has " + customerAtCounter.getOrderSize() + " burritos left in their order.");
+	               System.out.println("Customer Number " + customerAtCounter.getCustomerNumber() + " has " + customerAtCounter.getOrderSize() + " burritos left in their order.");
 	               
 	               BurritoBrothersStore.getStore().lineActions(customerAtCounter, true);  
 	               BurritoBrothersStore.getStore().serving.release();
@@ -40,7 +41,7 @@ public class Server implements Runnable{
 	               if (!BurritoBrothersStore.getStore().Register.isEmpty() && BurritoBrothersStore.getStore().register.tryAcquire())
 	               {
 	                   BurritoBrothersStore.getStore().checkout();
-	               }              
+	               }      
 	           }
 	       }
 	       catch (InterruptedException e) {
@@ -51,7 +52,7 @@ public class Server implements Runnable{
 	  
 	   public void run()
 	   {
-	       boolean working=true;  
+	       boolean working=true; 
 	       while (working)
 	       {
 	           try
@@ -63,6 +64,7 @@ public class Server implements Runnable{
 	               }
 	               else
 	               {
+	            	   working = false;
 	                   //close store
 	               }
 	           }

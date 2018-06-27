@@ -79,6 +79,14 @@ public class BurritoBrothersStore {
 		System.out.println("Customer Number " + customerNumber + " at the counter.");
 		Customer customerAtCounter = new Customer();
 		
+		customerAtCounter = line.get(0);
+		
+		for (int i = 0; i < currentCustomerInLine; i++){
+			line.set(i, line.get(i + 1));
+		}
+		
+		//line.set(currentCustomerInLine, null);
+		currentCustomerInLine -= 1;
 		return customerAtCounter;
 	}
 	
@@ -98,7 +106,7 @@ public class BurritoBrothersStore {
 	       {          
 	    	   Customer payingCustomer; 
 	           payingCustomer = Register.remove(0);
-	           System.out.println("Customer Number " + customerNumber + "is paying.");
+	           System.out.println("Customer Number " + customerNumber + " is paying.");
 	           try {
 	        	   Thread.sleep(25);
 	           }
@@ -108,8 +116,12 @@ public class BurritoBrothersStore {
 	                          
 	          
 	           currentCustomerCount -= 1;
-	           System.out.println("Customer Number " + customerNumber + "has left.");
+	           System.out.println("Customer Number " + customerNumber + " has left.");
 	       }  
 	       register.release();
-	   }  
+	   }
+	 
+	 //public void run(){
+		//enterCustomer();
+	// }
 }
