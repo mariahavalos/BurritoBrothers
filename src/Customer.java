@@ -1,6 +1,9 @@
-
 public class Customer implements Comparable<Customer> {
 
+	/*
+	 * Customer class, which creates a customer object with a custom sorting function using comparable. Reduces order size on partial fills. 
+	 */
+	
 	   private int customerNumber;
 	   private int orderSize;
 	      

@@ -5,20 +5,30 @@ public class Server implements Runnable{
 	 private int serverNumber;
 	 private Customer customerAtCounter;
 	   
+	 /*
+	  * Constructor for the server class, assigns each server a number 1-3 based off the simulation class.
+	  */
 	   public Server(int serverNumber)
 	   {
 	       this.serverNumber = serverNumber;
 	   }  
 	  
 	
-	   public void freeServer()
+	   /*
+	    * Partially fills orders greater than three burritos, pops the customer back in line and confirming they are not new customers (so their
+	    * arrival/inital order is not re-printed to the console), and adds one to the line count (which was decremented in the currentCustomerAtCounter function. 
+	    * Otherwise is the order was three or less burritos, the customer will be added to the register line and checked out when a server becomes free. 
+	    */
+	   public void free()
 	   {
 	       try
 	       {
+	    	   //acquire and release a server (semaphore) for the customer
 	           BurritoBrothersStore.getStore().counter.acquire();
 	           customerAtCounter = BurritoBrothersStore.getStore().currentCustomerAtCounter(serverNumber);
 	           BurritoBrothersStore.getStore().counter.release();
 	          
+	           //keep making burritos, pop the customer back in line
 	           if (customerAtCounter.getOrderSize() > 3)
 	           {
 	               customerAtCounter.partialFill();  
@@ -30,11 +40,12 @@ public class Server implements Runnable{
 	               BurritoBrothersStore.getStore().serving.release();
 	           }  
 	           
+	           //add to line for register and checkout when ready
 	           else
 	           {
 	               BurritoBrothersStore.getStore().cookBurritos(customerAtCounter.getOrderSize(), customerAtCounter.getCustomerNumber(), serverNumber);
 	               BurritoBrothersStore.pay(customerAtCounter);      
-	               if (!BurritoBrothersStore.getStore().Register.isEmpty() && BurritoBrothersStore.getStore().register.tryAcquire())
+	               if (BurritoBrothersStore.getStore().register.tryAcquire() && !BurritoBrothersStore.getStore().lineForTheRegister.isEmpty() )
 	               {
 	            	   System.out.println("\nServer Number " + serverNumber + " checking out Customer Number " + customerAtCounter.getCustomerNumber());
 	                   BurritoBrothersStore.getStore().checkout();
@@ -50,19 +61,19 @@ public class Server implements Runnable{
 	  
 	   public void run()
 	   {
-	       boolean working=true; 
-	       while (working)
+	       boolean isBusy = true; 
+	       while (isBusy)
 	       {
 	           try
 	           {
-	               // try to serve customer if no customer in line wait
+	               //wait for a customer to get in line, then serve. adds complexity to queue/asynchronousness/concurrency
 	               if (BurritoBrothersStore.getStore().serving.tryAcquire(300, TimeUnit.MILLISECONDS))
 	               {
-	                   freeServer();
+	                   free();
 	               }
 	               else
 	               {
-	            	   working = false;
+	            	   isBusy = false;
 	               }
 	           }
 	           catch (InterruptedException e) {
